@@ -61,16 +61,21 @@ The criteria, as well as their weight in the final grade is as follows:
   - Heuristic search (30%):
       - Correctness and optimality (20%); and
       - Runtime efficiency (10%).
-- Overall report readability (20%) — how accessible and coherent your explanation of your implementation is;
+- Overall report readability (20%) â€” how accessible and coherent your explanation of your implementation is;
 - Code readability (10%).
 
 ## Python Instructions
+In LAPRO you can just run (for Linux):
+```shell
+jupyter notebook
+```
+and for Windows you should execute Jupyter Notebook from the start menu. Open the given URL in a browser, and navigate to the folder of the cloned repository of this assignment.
 
 [Conda](https://conda.io/docs/user-guide/install/index.html) is required to run this assignment, and will install Jupyter for you.
 The following sequence of steps creates a virtual environment and installs the required dependencies for Python 3.6:
-```
+```shell
 conda create -n py36_heu python=3.6
-conda activate py36_heu
+source activate py36_heu #For windows: conda activate py36_heu
 pip install ipykernel
 python -m ipykernel install --name py36_heu
 ```
