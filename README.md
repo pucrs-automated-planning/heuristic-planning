@@ -75,7 +75,7 @@ and for Windows you should execute Jupyter Notebook from the start menu. Open th
 The following sequence of steps creates a virtual environment and installs the required dependencies for Python 3.6:
 ```shell
 conda create -n py36_heu python=3.6
-source activate py36_heu #For windows: conda activate py36_heu
+conda activate py36_heu #For windows: conda activate py36_heu
 pip install ipykernel
 python -m ipykernel install --name py36_heu
 ```
