@@ -22,14 +22,14 @@ class PDDL_Planner:
         parser.parse_domain(domainfile)
         parser.parse_problem(problemfile)
         # Test if first state is not the goal
-        if applicable(parser.state, parser.positive_goals, parser.negative_goals):
+        if applicable(parser.state, (parser.positive_goals, parser.negative_goals)):
             return [], 0
         # Grounding process
         ground_actions = []
         for action in parser.actions:
             for act in action.groundify(parser.objects):
                 ground_actions.append(act)
-        plan = self.solve(ground_actions, parser.state, parser.positive_goals, parser.negative_goals)
+        plan = self.solve(ground_actions, parser.state, (parser.positive_goals, parser.negative_goals))
         final_time = time.time() - start_time
         if verbose:
             print('Time: ' + str(final_time) + 's')
@@ -41,5 +41,5 @@ class PDDL_Planner:
                 print('No plan was found')
         return plan, final_time
 
-    def solve(self, domain, initial_state, positive_goals, negative_goals):
+    def solve(self, domain, initial_state, goals):
         raise NotImplementedError("PDDL Planners need to implement solve")

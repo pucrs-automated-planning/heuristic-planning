@@ -2,12 +2,14 @@
 # Applicable
 #-----------------------------------------------
 
-def applicable(state, positive, negative):
+def applicable(state, precondition):
+    positive, negative = precondition 
     return positive.issubset(state) and not negative.intersection(state)
 
 #-----------------------------------------------
 # Apply
 #-----------------------------------------------
 
-def apply(state, positive, negative):
-    return frozenset(state.union(positive).difference(negative))
+def apply(state, effects):
+    positive, negative = effects
+    return frozenset(state.difference(negative).union(positive))
