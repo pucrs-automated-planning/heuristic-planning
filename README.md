@@ -6,12 +6,12 @@
 **Leonardo Rosa Amado (PhD Student)**
 
 Computer Science (4646A-4):
-- Assigned: 30 August
-- Due: 25 September
+- Assigned: 28 March
+- Due: 30 April
 
 Computer Engineering (4621A-4):
-- Assigned: 28 August
-- Due: 23 September
+- Assigned: 26 March
+- Due: 28 April
 
 ## Assignment Overview
 
