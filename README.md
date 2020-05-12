@@ -76,8 +76,8 @@ The following sequence of steps creates a virtual environment and installs the r
 ```shell
 conda create -n py36_heu python=3.6
 conda activate py36_heu #For windows: conda activate py36_heu
-pip install ipykernel
-python -m ipykernel install --name py36_heu
+pip install ipykernel jupyterlab matplotlib nose
+python -m ipykernel install --name py36_heu --user
 ```
 
 ## Collaboration Policy
