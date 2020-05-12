@@ -4,7 +4,10 @@
 import re
 from pddl.action import Action
 
-class PDDL_Parser:
+
+class PDDLParser:
+
+    SUPPORTED_REQUIREMENTS = [':strips', ':negative-preconditions', ':typing']
 
     # ------------------------------------------
     # Tokens
@@ -44,23 +47,54 @@ class PDDL_Parser:
         tokens = self.scan_tokens(domain_filename)
         if type(tokens) is list and tokens.pop(0) == 'define':
             self.domain_name = 'unknown'
+            self.requirements = []
+            self.types = []
             self.actions = []
+            self.predicates = {}
             while tokens:
                 group = tokens.pop(0)
                 t = group.pop(0)
                 if   t == 'domain':
                     self.domain_name = group[0]
                 elif t == ':requirements':
-                    pass # TODO
+                    for req in group:
+                        if not req in self.SUPPORTED_REQUIREMENTS:
+                            raise Exception('Requirement ' + req + ' not supported')
+                    self.requirements = group
                 elif t == ':predicates':
-                    pass # TODO
+                    self.parse_predicates(group)
                 elif t == ':types':
-                    pass # TODO
+                    self.types = group
                 elif t == ':action':
                     self.parse_action(group)
                 else: print(str(t) + ' is not recognized in domain')
         else:
-            raise 'File ' + domain_filename + ' does not match domain pattern'
+            raise Exception('File ' + domain_filename + ' does not match domain pattern')
+
+    #-----------------------------------------------
+    # Parse predicates
+    #-----------------------------------------------
+
+    def parse_predicates(self, group):
+        for pred in group:
+            predicate_name = pred.pop(0)
+            if predicate_name in self.predicates:
+                raise Exception('Predicate ' + predicate_name + ' redefined')
+            arguments = {}
+            untyped_variables = []
+            while pred:
+                t = pred.pop(0)
+                if t == '-':
+                    if not untyped_variables:
+                        raise Exception('Unexpected hyphen in predicates')
+                    type = pred.pop(0)
+                    while untyped_variables:
+                        arguments[untyped_variables.pop(0)] = type
+                else:
+                    untyped_variables.append(t)
+            while untyped_variables:
+                arguments[untyped_variables.pop(0)] = 'object'
+            self.predicates[predicate_name] = arguments
 
     #-----------------------------------------------
     # Parse action
@@ -84,20 +118,26 @@ class PDDL_Parser:
                 if not type(group) is list:
                     raise Exception('Error with ' + name + ' parameters')
                 parameters = []
+                untyped_parameters = []
                 p = group.pop(0)
                 while p:
-                    variable = p.pop(0)
-                    if p and p[0] == '-':
-                        p.pop(0)
-                        parameters.append([variable, p.pop(0)])
+                    t = p.pop(0)
+                    if t == '-':
+                        if not untyped_parameters:
+                            raise Exception('Unexpected hyphen in ' + name + ' parameters')
+                        ptype = p.pop(0)
+                        while untyped_parameters:
+                            parameters.append([untyped_parameters.pop(0), ptype])
                     else:
-                        parameters.append([variable, 'object'])
+                        untyped_parameters.append(t)
+                while untyped_parameters:
+                    parameters.append([untyped_parameters.pop(0), 'object'])
             elif t == ':precondition':
                 self.split_propositions(group.pop(0), positive_preconditions, negative_preconditions, name, ' preconditions')
             elif t == ':effect':
                 self.split_propositions(group.pop(0), add_effects, del_effects, name, ' effects')
             else: print(str(t) + ' is not recognized in action')
-        self.actions.append(Action(name, parameters, frozenset(positive_preconditions), frozenset(negative_preconditions), frozenset(add_effects), frozenset(del_effects)))
+        self.actions.append(Action(name, tuple(parameters), frozenset(positive_preconditions), frozenset(negative_preconditions), frozenset(add_effects), frozenset(del_effects)))
 
     #-----------------------------------------------
     # Parse problem
@@ -145,6 +185,8 @@ class PDDL_Parser:
                     self.positive_goals = frozenset(pos)
                     self.negative_goals = frozenset(neg)
                 else: print(str(t) + ' is not recognized in problem')
+        else:
+            raise Exception('File ' + problem_filename + ' does not match problem pattern')
 
     #-----------------------------------------------
     # Split propositions
@@ -180,7 +222,7 @@ if __name__ == '__main__':
     import pprint
     domain = sys.argv[1]
     problem = sys.argv[2]
-    parser = PDDL_Parser()
+    parser = PDDLParser()
     print('----------------------------')
     pprint.pprint(parser.scan_tokens(domain))
     print('----------------------------')
@@ -188,7 +230,7 @@ if __name__ == '__main__':
     print('----------------------------')
     parser.parse_domain(domain)
     parser.parse_problem(problem)
-    print('Domain name:' + parser.domain_name)
+    print('Domain name: ' + parser.domain_name)
     for act in parser.actions:
         print(act)
     print('----------------------------')

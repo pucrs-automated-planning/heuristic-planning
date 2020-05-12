@@ -1,5 +1,8 @@
 (define (domain tsp)
   (:requirements :strips :negative-preconditions :typing)
+  (:types 
+    position - object
+  )
   (:predicates
     (at ?pos)
     (connected ?start ?finish)
@@ -11,7 +14,7 @@
     :precondition (and
       (at ?start)
       (connected ?start ?finish)
-      (not (visited ?finish))
+      ; (not (visited ?finish)) ; This makes some problems unsolvable
     )
     :effect (and
       (at ?finish)

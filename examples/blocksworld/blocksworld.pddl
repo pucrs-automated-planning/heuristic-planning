@@ -1,5 +1,5 @@
 (define (domain blocksworld)
-  (:requirements :strips :negative-preconditions :equality)
+  (:requirements :strips :negative-preconditions)
   (:predicates (clear ?x) (onTable ?x) (holding ?x) (on ?x ?y))
 
   (:action pickup
@@ -16,13 +16,13 @@
 
   (:action stack
     :parameters (?ob ?underob)
-    :precondition (and (clear ?underob) (holding ?ob) (not (= ?ob ?underob)))
+    :precondition (and (clear ?underob) (holding ?ob) (not (equal ?ob ?underob)))
     :effect (and (clear ?ob) (on ?ob ?underob) (not (clear ?underob)) (not (holding ?ob)))
   )
 
   (:action unstack
     :parameters (?ob ?underob)
-    :precondition (and (on ?ob ?underob) (clear ?ob) (not (= ?ob ?underob)))
+    :precondition (and (on ?ob ?underob) (clear ?ob) (not (equal ?ob ?underob)))
     :effect (and (holding ?ob) (clear ?underob) (not (on ?ob ?underob)) (not (clear ?ob)))
   )
 )

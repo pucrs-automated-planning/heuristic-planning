@@ -1,5 +1,5 @@
 (define (domain dwr)
-  (:requirements :strips :typing :negative-preconditions :equality)
+  (:requirements :strips :typing :negative-preconditions)
 
   (:types
     location  ; there are several connected locations in the harbor
