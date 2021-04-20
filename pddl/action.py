@@ -16,7 +16,10 @@ class Action:
 
     def __repr__(self):
         if len(self.parameters) > 0: # Empty lists gave us grief before
-            return "({!s} {!r})".format(self.name, *list(self.parameters))
+            parf = ['{!s}' for par in self.parameters]
+            parf = ' '.join(parf)
+            pars = parf.format(*list(self.parameters))
+            return "({!s} {!s})".format(self.name, pars)
         else:
             return "({!s})".format(self.name)
 

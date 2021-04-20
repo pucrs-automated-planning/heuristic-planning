@@ -214,6 +214,7 @@ class PDDLParser:
     def state_to_tuple(self, state):
         return frozenset(tuple(fact) for fact in state)
 
+
 # ==========================================
 # Main
 # ==========================================

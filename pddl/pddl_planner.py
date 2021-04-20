@@ -15,7 +15,7 @@ class PDDLPlanner:
     # Solve
     # -----------------------------------------------
 
-    def solve_file(self, domainfile, problemfile):
+    def solve_file(self, domainfile, problemfile, preprocessor=None):
         if self.collect_benchmark: self.stats = PlanningBenchmark().get_instance(domainfile,problemfile)
 
         # Parser
@@ -28,6 +28,10 @@ class PDDLPlanner:
             return [], 0
         # Grounding process
         ground_actions = self.grounding(parser)
+        if preprocessor:
+            print("%d unprocessed actions"%len(ground_actions))
+            ground_actions = preprocessor.preprocess_actions(ground_actions, parser.state, (parser.positive_goals, parser.negative_goals))
+            print("%d preprocessed actions"%len(ground_actions))
         if self.stats: self.stats.action_space = len(ground_actions)  # compute stats
         plan = self.solve(ground_actions, parser.state, (parser.positive_goals, parser.negative_goals))
         final_time = time.time() - start_time
