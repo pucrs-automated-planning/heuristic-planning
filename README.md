@@ -1,28 +1,31 @@
-# Assignment 1: Planning using Heuristic Search
-**Base code for the heuristic planning assignment**
+# Assignment 2: Planning using Heuristic Search
 
 **Felipe Meneguzzi**  
 **Mauricio Magnaguagno (PhD Student)**  
-**Leonardo Rosa Amado (PhD Student)**
+**Leonardo Rosa Amado (PhD Student)**  
+**Gabriel Paludo Licks (MSc Student)**
 
-Computer Science (4646A-4):
-- Assigned: 28 March
-- Due: 30 April
-
-Computer Engineering (4621A-4):
-- Assigned: 26 March
-- Due: 28 April
+AI Planning (1982D-02):
+- Assigned: 15 May
+- Due: 16 June
 
 ## Assignment Overview
 
-<img align="right" style="margin:20px" src="planning-assignment.png"/>
+<img align="right" src="planning-assignment.png"/>
 
-The goal of this work is to implement the core functions of an automated planner. You will implement three main functions in this assignment:
-- Implement the **Max-Cost** heuristic function.
+The goal of this work is to implement the core functions of an automated planner and benchmark a number of heuristics. You will implement three main functions in this assignment:
+- Implement a number of heuristic functions
+    - **Max-Cost** ($h^{max}$)
+    - **Additive Cost** ($h^{add}$)
+    - **Relaxed Plan** ($h^{FF}$)
+    - **Critical Path** ($h^{m}$) *(Optional)*
+    - **Optimal Delete Relaxation** ($h^{+}$) *(Optional)*
+    -  **Landmark Heuristics** ($h^{LM}$ and $h^{LM-Cut}$) *(Optional)*
+    <!-- - **Operator Counting Heuristics** ($h^{OC}$) *(Optional)* -->
 - Implement a function capable of validating a plan given a domain and a problem.
 - Finally, implement the heuristic search **A\***
 
-After implementing the required functions, you must write a 2-page paper. The entire package must be delivered using GitHub, where your implemented functions must be contained in this Jupyter Notebook, and the paper as a separate **pdf** file committed in the same Github repository (the template is in the ```paper``` folder).
+After implementing the required functions, you must write a 2-page paper. The entire package must be delivered using GitHub, where your implemented functions must be contained in this Jupyter Notebook, and the paper as a separate **pdf** file committed in the same Github repository in the ```paper``` folder.
 
 ## Experimentation
 
@@ -31,6 +34,8 @@ After implementing the required functions, you must write a 2-page paper. The en
   - [dinner](examples/dinner)
   - [dwr](examples/dwr)
   - [tsp](examples/tsp)
+  - [dompteur](examples/dompteur)
+  - [logistics](examples/logistics)
 
 - Planning tools and extra domains and problems to sanity check your own implementation:
   - [Web-Planner](https://web-planner.herokuapp.com/)
@@ -44,7 +49,7 @@ In order to properly evaluate your work and thought process, you will write a **
 These guidelines are to be followed **exactly**. 
 **Reports that are less than two pages of actual content, or not in format will receive 0 marks for the report criterion.** 
 This report will be included in the deliverables of the assignment. 
-[The formatting instructions are available at ShareLatex (AAAI Press)](https://www.sharelatex.com/templates/journals/aaai-press). 
+[The formatting instructions are available at Overleaf (AAAI Press)](https://www.overleaf.com/latex/templates/aaai-press-latex-template/jymjdgdpdmxp). 
 The report must have the following sections:
 
 - An introduction with your understanding of the problem domain, outlining the remainder of the paper;
@@ -56,8 +61,12 @@ Grading will consider elements of your encoding, experimentation and reporting o
 The criteria, as well as their weight in the final grade is as follows:
 
 - Implementation (70%):
-  - Heuristic function (20%);
-  - Validator (20%);
+  - Heuristic functions (30%):
+      - $h^{max}$ (10%);
+      - $h^{add}$ (10%);
+      - $h^{FF}$ (10%); and
+      - Any other heuristic and tests (10% bonus).
+  - Validator (10%);
   - Heuristic search (30%):
       - Correctness and optimality (20%); and
       - Runtime efficiency (10%).
